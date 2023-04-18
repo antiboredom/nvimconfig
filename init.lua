@@ -333,7 +333,7 @@ vim.o.wb = false
 vim.o.swapfile = false
 
 -- session stuff
-vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 
 -- [[ Basic Keymaps ]]
