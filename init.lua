@@ -275,6 +275,13 @@ require('lazy').setup({
 -- Set highlight on search
 vim.o.hlsearch = true
 
+-- Incremental search
+vim.o.incsearch = true
+
+-- Hide search messages
+-- vim.opt.shortmess:append { c = true }
+
+
 -- Make line numbers default
 vim.wo.number = true
 vim.o.relativenumber = true
@@ -321,7 +328,7 @@ vim.o.tabstop = 2
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.writebackup = false
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1 -- how can i set this back to zero?
 
 -- linebreak and wrap by default
 vim.o.linebreak = true
