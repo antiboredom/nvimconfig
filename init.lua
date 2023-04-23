@@ -29,6 +29,24 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- ripping this off from astronvim
+-- nice way to toggle some terminals
+local terms = {}
+local function toggle_term_cmd(opts)
+	-- if a command string is provided, create a basic table for Terminal:new() options
+	if type(opts) == "string" then opts = { cmd = opts, hidden = true } end
+	local num = vim.v.count > 0 and vim.v.count or 1
+	-- if terminal doesn't exist yet, create it
+	if not terms[opts.cmd] then terms[opts.cmd] = {} end
+	if not terms[opts.cmd][num] then
+		if not opts.count then opts.count = vim.tbl_count(terms) * 100 + num end
+		if not opts.on_exit then opts.on_exit = function() terms[opts.cmd][num] = nil end end
+		terms[opts.cmd][num] = require("toggleterm.terminal").Terminal:new(opts)
+	end
+	-- toggle the terminal
+	terms[opts.cmd][num]:toggle()
+end
+
 -- PLUGINS
 require('lazy').setup({
 	-- Git related plugins
@@ -273,6 +291,13 @@ require('lazy').setup({
 	{
 		"jose-elias-alvarez/null-ls.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{
+				"jay-babu/mason-null-ls.nvim",
+				cmd = { "NullLsInstall", "NullLsUninstall" },
+				opts = { handlers = {} },
+			},
+		},
 		opts = function()
 			local nls = require("null-ls")
 			return {
@@ -283,7 +308,24 @@ require('lazy').setup({
 				},
 			}
 		end,
-	}
+	},
+
+	-- toggle term
+	{
+		"akinsho/toggleterm.nvim",
+		cmd = { "ToggleTerm", "TermExec" },
+		opts = {
+			size = 10,
+			open_mapping = [[<F7>]],
+			shading_factor = 2,
+			direction = "float",
+			float_opts = {
+				border = "curved",
+				highlights = { border = "Normal", background = "Normal" },
+			},
+		},
+	},
+
 }, {})
 
 -- [[ Setting options ]]
@@ -379,6 +421,8 @@ vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down, { desc = 
 vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up, { desc = "Move to above split" })
 vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right, { desc = "Move to right split" })
 
+-- show lazygit
+vim.keymap.set('n', "<leader>g", function() toggle_term_cmd "lazygit" end, { desc = "ToggleTerm lazygit" })
 
 -- reveal in finder
 vim.keymap.set("n", "<leader>r", "<cmd>Reveal<cr>", { desc = "Reveal in finder" })
