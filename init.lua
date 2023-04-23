@@ -440,6 +440,10 @@ vim.keymap.set('n', '<leader>s', ":set spell!<CR>", { desc = "Toggle spellcheck"
 -- toggle zen
 vim.keymap.set('n', '<leader>z', ":ZenMode<CR>", { desc = "Toggle zenmode" })
 
+-- toggle terminal
+vim.keymap.set('n', "<C-t>", '<cmd>ToggleTerm<cr>', {desc = "Toggle terminal"})
+vim.keymap.set('t', "<C-t>", '<cmd>ToggleTerm<cr>', {desc = "Toggle terminal"})
+
 -- tab and shift tab cycle through buffers
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { noremap = true, desc = "Next buffer" })
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { noremap = true, desc = "Previous buffer" })
